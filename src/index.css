@@ -2,6 +2,10 @@ html {
     box-sizing: border-box;
 }
 
+:root {
+    --main: #264c37;
+}
+
 *,
 *:before,
 *:after {
@@ -12,8 +16,13 @@ body {
     margin: 0;
     font-family: 'League Spartan', sans-serif;
     font-weight: 400;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #212529;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: url('./assets/background.jpg');
+    background-position: top center;
 }
 
 input::-webkit-outer-spin-button,

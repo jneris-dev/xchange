@@ -32,7 +32,7 @@ export function CurrencyInput({
                 <select value={currency} onChange={e => onCurrencyChange(e.target.value)}>
                     {currenciesCodes.map((currency => (
                         <option value={currency} key={currency}>
-                            {names[currency].currency_name}
+                            {names[currency].currency_code} - {names[currency].currency_name}
                         </option>
                     )))}
                 </select>

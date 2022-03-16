@@ -14,13 +14,15 @@ export default function App() {
 
     const [currentNames, setCurrentNames] = useState([]);
 
-    const [amount1, setAmount1] = useState<number>();
+    const [amount1, setAmount1] = useState<number>(1);
     const [amount2, setAmount2] = useState<number>();
 
     const symbol1 = getSymbolFromCurrency(currency1);
     const symbol2 = getSymbolFromCurrency(currency2);
 
     const [invert, setInvert] = useState(false)
+
+    const newDate = new Date(date).toDateString()
 
     function format(number: any) {
         return number.toFixed(2);
@@ -49,14 +51,20 @@ export default function App() {
     }
 
     useEffect(() => {
-        const key = '2d5a6d1b1c324614fc706ccb127ecef1';
-        let url = `http://data.fixer.io/api/latest?access_key=${key}`;
+        const x_rapidapi_host = 'currencyscoop.p.rapidapi.com';
+        const x_rapidapi_key = '44dee845f9mshe02550efd959f1fp1ad37bjsna498e9eebe7d';
 
-        fetch(url).then((response) => {
+        fetch("https://currencyscoop.p.rapidapi.com/latest", {
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": x_rapidapi_host,
+                "x-rapidapi-key": x_rapidapi_key
+            }
+        }).then((response) => {
             return response.json()
         }).then(json => {
-            setRates(json.rates);
-            setDate(json.date);
+            setRates(json.response.rates);
+            setDate(json.response.date);
         })
     }, [])
 
@@ -83,18 +91,24 @@ export default function App() {
         <div className="app">
             <div className="card">
                 <h1>Currency Converter</h1>
-                <p>last updated: <span>{date}</span></p>
+                <p>last updated: <span>{newDate}</span></p>
                 <form className="todoWrap" onSubmit={convertCurrencies}>
-                    <input
-                        type="number"
-                        className="amount"
-                        onChange={e => setAmount1(Number(e.target.value))}
-                        required
-                        placeholder='Enter Amount'
-                    />
+                    <div className="input-group">
+                        <span className="symbol">
+                            {!invert ? symbol1 : symbol2}
+                        </span>
+                        <input
+                            type="number"
+                            className="amount"
+                            onChange={e => setAmount1(Number(e.target.value))}
+                            required
+                            defaultValue={amount1}
+                            placeholder='Enter Amount'
+                        />
+                    </div>
                     <div className="currencies">
                         <CurrencyInput
-                            onCurrencyChange={handleCurrency1Change}
+                            onCurrencyChange={!invert ? handleCurrency1Change : handleCurrency2Change}
                             currencies={Object.keys(rates)}
                             currency={!invert ? currency1 : currency2}
                             label={"From"}
@@ -102,11 +116,11 @@ export default function App() {
                         />
                         <div className="invert-currency">
                             <span onClick={invertCurrencies}>
-                                <AiOutlineSwap size={30} color="coral" />
+                                <AiOutlineSwap size={30} color="#264c37" />
                             </span>
                         </div>
                         <CurrencyInput
-                            onCurrencyChange={handleCurrency2Change}
+                            onCurrencyChange={!invert ? handleCurrency2Change : handleCurrency1Change}
                             currencies={Object.keys(rates)}
                             currency={!invert ? currency2 : currency1}
                             label={"To"}
