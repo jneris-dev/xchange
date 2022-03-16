@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { AiOutlineSwap } from 'react-icons/ai';
+import GithubCorner from 'react-github-corner';
 
 import { CurrencyInput } from './components/CurrencyInput';
 import './App.css'
@@ -14,7 +15,7 @@ export default function App() {
 
     const [currentNames, setCurrentNames] = useState([]);
 
-    const [amount1, setAmount1] = useState<number>(1);
+    const [amount1, setAmount1] = useState<number>();
     const [amount2, setAmount2] = useState<number>();
 
     const symbol1 = getSymbolFromCurrency(currency1);
@@ -89,6 +90,14 @@ export default function App() {
 
     return (
         <div className="app">
+            <GithubCorner
+                href="https://github.com/jneris-dev/xchange"
+                direction="left"
+                bannerColor="#fff"
+                octoColor="#264c37"
+                size={60}
+                target="_blank"
+            />
             <div className="card">
                 <h1>Currency Converter</h1>
                 <p>last updated: <span>{newDate}</span></p>
@@ -104,6 +113,7 @@ export default function App() {
                             required
                             defaultValue={amount1}
                             placeholder='Enter Amount'
+                            step="any"
                         />
                     </div>
                     <div className="currencies">
@@ -131,10 +141,12 @@ export default function App() {
                         className="convert-button"
                         type="submit"
                     >
-                        Convert
+                        Convert Now
                     </button>
                 </form>
                 <p className="result" style={amount2 && { visibility: 'visible' }}>{!invert ? symbol2 : symbol1} {amount2}</p>
+                <hr />
+                <p>Result</p>
             </div>
         </div>
     )
